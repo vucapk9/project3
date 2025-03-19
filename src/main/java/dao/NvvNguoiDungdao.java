@@ -1,14 +1,8 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.NvvNguoiDung;
 
 public class NvvNguoiDungdao {
@@ -24,43 +18,8 @@ public class NvvNguoiDungdao {
         }
         return DriverManager.getConnection(url, username, password);
     }
- // Đăng ký người dùng
-    public boolean insertUser(NvvNguoiDung user) {
-        String sql = "INSERT INTO NvvNguoiDung (tenDangNhap, matKhau, vaiTro) VALUES (?, ?, ?)";
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getTenDangNhap());
-            stmt.setString(2, user.getMatKhau());
-            stmt.setString(3, user.getVaiTro());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
-    // Đăng nhập người dùng
-    public NvvNguoiDung loginUser(String tenDangNhap, String matKhau) {
-        String sql = "SELECT * FROM NvvNguoiDung WHERE tenDangNhap = ? AND matKhau = ?";
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, tenDangNhap);
-            stmt.setString(2, matKhau);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    NvvNguoiDung user = new NvvNguoiDung();
-                    user.setMaNguoiDung(rs.getInt("maNguoiDung"));
-                    user.setTenDangNhap(rs.getString("tenDangNhap"));
-                    user.setVaiTro(rs.getString("vaiTro"));
-                    return user;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
+    // Lấy danh sách tất cả người dùng
     public List<NvvNguoiDung> getAll() {
         List<NvvNguoiDung> list = new ArrayList<>();
         String sql = "SELECT * FROM NvvNguoiDung";
@@ -68,16 +27,94 @@ public class NvvNguoiDungdao {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                NvvNguoiDung nd = new NvvNguoiDung();
-                nd.setMaNguoiDung(rs.getInt("maNguoiDung"));
-                nd.setTenDangNhap(rs.getString("tenDangNhap"));
-                nd.setMatKhau(rs.getString("matKhau"));
-                nd.setVaiTro(rs.getString("vaiTro"));
-                list.add(nd);
+                NvvNguoiDung user = new NvvNguoiDung(
+                    rs.getInt("MaNguoiDung"),
+                    rs.getString("TenDangNhap"),
+                    rs.getString("MatKhau"),
+                    rs.getString("HoTen"),
+                    rs.getString("Email"),
+                    rs.getString("SoDienThoai"),
+                    rs.getString("VaiTro")
+                );
+                list.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // Thêm người dùng mới
+    public boolean insert(NvvNguoiDung user) {
+        String sql = "INSERT INTO NvvNguoiDung (TenDangNhap, MatKhau, HoTen, Email, SoDienThoai, VaiTro) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getTenDangNhap());
+            ps.setString(2, user.getMatKhau());
+            ps.setString(3, user.getHoTen());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getSoDienThoai());
+            ps.setString(6, user.getVaiTro());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return false;
+    }
+
+    // Cập nhật thông tin người dùng
+    public boolean update(NvvNguoiDung user) {
+        String sql = "UPDATE NvvNguoiDung SET TenDangNhap=?, MatKhau=?, HoTen=?, Email=?, SoDienThoai=?, VaiTro=? WHERE MaNguoiDung=?";
+        try (Connection conn = connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getTenDangNhap());
+            ps.setString(2, user.getMatKhau());
+            ps.setString(3, user.getHoTen());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getSoDienThoai());
+            ps.setString(6, user.getVaiTro());
+            ps.setInt(7, user.getMaNguoiDung());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return false;
+    }
+
+    // Xóa người dùng theo ID
+    public boolean delete(int maNguoiDung) {
+        String sql = "DELETE FROM NvvNguoiDung WHERE MaNguoiDung=?";
+        try (Connection conn = connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maNguoiDung);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return false;
+    }
+
+    // Lấy người dùng theo ID
+    public NvvNguoiDung getById(int maNguoiDung) {
+        String sql = "SELECT * FROM NvvNguoiDung WHERE MaNguoiDung=?";
+        try (Connection conn = connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maNguoiDung);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new NvvNguoiDung(
+                    rs.getInt("MaNguoiDung"),
+                    rs.getString("TenDangNhap"),
+                    rs.getString("MatKhau"),
+                    rs.getString("HoTen"),
+                    rs.getString("Email"),
+                    rs.getString("SoDienThoai"),
+                    rs.getString("VaiTro")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

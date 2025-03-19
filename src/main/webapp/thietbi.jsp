@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, model.NvvThietBi, dao.NvvThietBidao" %>
 <%
     NvvThietBidao thietBiDAO = new NvvThietBidao();
@@ -23,7 +24,7 @@
 <body>
     <div class="container mt-4">
         <h2 class="text-center">Danh Sách Thiết Bị</h2>
-        <a href="them-thietbi.jsp" class="btn btn-primary mb-3">Thêm Thiết Bị</a>
+        <a href="addThietBi.jsp" class="btn btn-primary mb-3">Thêm Thiết Bị</a>
 
         <table class="table table-bordered">
             <thead class="table-dark">
@@ -51,7 +52,7 @@
                         <td><%= tb.getSoLuong() %></td>
                         <td><%= tb.getMaNhaCungCap() %></td>
                         <td>
-                            <a href="sua-thietbi.jsp?id=<%= tb.getMaThietBi() %>" class="btn btn-warning btn-sm">Sửa</a>
+                            <a href="editThietBi.jsp?id=<%= tb.getMaThietBi() %>" class="btn btn-warning btn-sm">Sửa</a>
                             <a href="thietbi.jsp?action=delete&id=<%= tb.getMaThietBi() %>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</a>
                         </td>
                     </tr>

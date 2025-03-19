@@ -1,61 +1,59 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import controller.NvvNhaCungCap;
+import java.sql.*;
+import java.util.*;
+import model.NvvNhaCungCap;
+import utils.DatabaseConnection;
 
 public class NvvNhaCungCapdao {
-    private String url = "jdbc:mysql://localhost:3307/quanlytrangthietbimamnon_nvv2210900081"; 
-    private String username = "root";
-    private String password = ""; 
-
-    public Connection connect() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Không tìm thấy Driver MySQL", e);
-        }
-        return DriverManager.getConnection(url, username, password);
-    }
-    public void insert(NvvNhaCungCap ncc) {
-        String sql = "INSERT INTO NvvNhaCungCap (tenNhaCungCap, diaChi, soDienThoai, email) VALUES (?, ?, ?, ?)";
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, ncc.getTenNhaCungCap());
-            stmt.setString(2, ncc.getDiaChi());
-            stmt.setString(3, ncc.getSoDienThoai());
-            stmt.setString(4, ncc.getEmail());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
     public List<NvvNhaCungCap> getAll() {
         List<NvvNhaCungCap> list = new ArrayList<>();
         String sql = "SELECT * FROM NvvNhaCungCap";
-        try (Connection conn = connect();
+        try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                NvvNhaCungCap ncc = new NvvNhaCungCap();
-                ncc.setMaNhaCungCap(rs.getInt("maNhaCungCap"));
-                ncc.setTenNhaCungCap(rs.getString("tenNhaCungCap"));
-                ncc.setDiaChi(rs.getString("diaChi"));
-                ncc.setSoDienThoai(rs.getString("soDienThoai"));
-                list.add(ncc);
+                list.add(new NvvNhaCungCap(
+                    rs.getInt("MaNhaCungCap"),
+                    rs.getString("TenNhaCungCap"),
+                    rs.getString("DiaChi"),
+                    rs.getString("SoDienThoai"),
+                    rs.getString("Email")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
+
+    public boolean insert(NvvNhaCungCap ncc) {
+        String sql = "INSERT INTO NvvNhaCungCap (TenNhaCungCap, DiaChi, SoDienThoai, Email) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, ncc.getTenNhaCungCap());
+            ps.setString(2, ncc.getDiaChi());
+            ps.setString(3, ncc.getSoDienThoai());
+            ps.setString(4, ncc.getEmail());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return false;
+    }
+
+	public NvvNhaCungCap getById(int maNhaCungCap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean update(NvvNhaCungCap nhaCungCap) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean delete(int maNhaCungCap) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

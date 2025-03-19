@@ -1,6 +1,8 @@
 package model;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 public class NvvBaoCao {
     private int maBaoCao;
@@ -49,7 +51,12 @@ public class NvvBaoCao {
         this.ghiChu = ghiChu;
     }
 
-	public void setTieuDe(String string) {
+	public void setMaNguoiDung(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setNgayTao(Timestamp timestamp) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -59,13 +66,23 @@ public class NvvBaoCao {
 		
 	}
 
-	public String getTieuDe() {
+	public void setTieuDe(String string) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	public String getNoiDung() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getTieuDe() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getMaNguoiDung() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

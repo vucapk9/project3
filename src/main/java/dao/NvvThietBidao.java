@@ -1,14 +1,8 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.NvvThietBi;
 
 public class NvvThietBidao {
@@ -24,7 +18,8 @@ public class NvvThietBidao {
         }
         return DriverManager.getConnection(url, username, password);
     }
-    
+
+    // Lấy danh sách tất cả thiết bị
     public List<NvvThietBi> getAll() {
         List<NvvThietBi> list = new ArrayList<>();
         String sql = "SELECT * FROM NvvThietBi";
@@ -32,15 +27,16 @@ public class NvvThietBidao {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                NvvThietBi tb = new NvvThietBi();
-                tb.setMaThietBi(rs.getInt("maThietBi"));
-                tb.setTenThietBi(rs.getString("tenThietBi"));
-                tb.setMaDanhMuc(rs.getInt("maDanhMuc"));
-                tb.setMoTa(rs.getString("moTa"));
-                tb.setTieuChuan(rs.getString("tieuChuan"));
-                tb.setTinhTrang(rs.getString("tinhTrang"));
-                tb.setSoLuong(rs.getInt("soLuong"));
-                tb.setMaNhaCungCap(rs.getInt("maNhaCungCap"));
+                NvvThietBi tb = new NvvThietBi(
+                    rs.getInt("MaThietBi"),
+                    rs.getString("TenThietBi"),
+                    rs.getInt("MaDanhMuc"),
+                    rs.getString("MoTa"),
+                    rs.getString("TieuChuan"),
+                    rs.getString("TinhTrang"),
+                    rs.getInt("SoLuong"),
+                    rs.getInt("MaNhaCungCap"),0
+                );
                 list.add(tb);
             }
         } catch (SQLException e) {
@@ -48,9 +44,10 @@ public class NvvThietBidao {
         }
         return list;
     }
-    
-    public void insert(NvvThietBi tb) {
-        String sql = "INSERT INTO NvvThietBi (tenThietBi, maDanhMuc, moTa, tieuChuan, tinhTrang, soLuong, maNhaCungCap) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    // Thêm thiết bị mới
+    public boolean insert(NvvThietBi tb) {
+        String sql = "INSERT INTO NvvThietBi (TenThietBi, MaDanhMuc, MoTa, TieuChuan, TinhTrang, SoLuong, MaNhaCungCap) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = connect();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tb.getTenThietBi());
@@ -64,10 +61,12 @@ public class NvvThietBidao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+		return false;
     }
-    
-    public void update(NvvThietBi tb) {
-        String sql = "UPDATE NvvThietBi SET tenThietBi=?, maDanhMuc=?, moTa=?, tieuChuan=?, tinhTrang=?, soLuong=?, maNhaCungCap=? WHERE maThietBi=?";
+
+    // Cập nhật thông tin thiết bị
+    public boolean update(NvvThietBi tb) {
+        String sql = "UPDATE NvvThietBi SET TenThietBi=?, MaDanhMuc=?, MoTa=?, TieuChuan=?, TinhTrang=?, SoLuong=?, MaNhaCungCap=? WHERE MaThietBi=?";
         try (Connection conn = connect();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tb.getTenThietBi());
@@ -82,10 +81,12 @@ public class NvvThietBidao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+		return false;
     }
-    
-    public void delete(int maThietBi) {
-        String sql = "DELETE FROM NvvThietBi WHERE maThietBi=?";
+
+    // Xóa thiết bị theo ID
+    public boolean delete(int maThietBi) {
+        String sql = "DELETE FROM NvvThietBi WHERE MaThietBi=?";
         try (Connection conn = connect();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maThietBi);
@@ -93,5 +94,31 @@ public class NvvThietBidao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+		return false;
+    }
+
+    // Lấy thiết bị theo ID
+    public NvvThietBi getById(int maThietBi) {
+        String sql = "SELECT * FROM NvvThietBi WHERE MaThietBi=?";
+        try (Connection conn = connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maThietBi);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new NvvThietBi(
+                    rs.getInt("MaThietBi"),
+                    rs.getString("TenThietBi"),
+                    rs.getInt("MaDanhMuc"),
+                    rs.getString("MoTa"),
+                    rs.getString("TieuChuan"),
+                    rs.getString("TinhTrang"),
+                    rs.getInt("SoLuong"),
+                    rs.getInt("MaNhaCungCap"),0
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -7,6 +7,16 @@ public class NvvNhaCungCap {
     private String soDienThoai;
     private String email;
 
+    public NvvNhaCungCap() {}
+
+    public NvvNhaCungCap(int maNhaCungCap, String tenNhaCungCap, String diaChi, String soDienThoai, String email) {
+        this.maNhaCungCap = maNhaCungCap;
+        this.tenNhaCungCap = tenNhaCungCap;
+        this.diaChi = diaChi;
+        this.soDienThoai = soDienThoai;
+        this.email = email;
+    }
+
     public int getMaNhaCungCap() {
         return maNhaCungCap;
     }
