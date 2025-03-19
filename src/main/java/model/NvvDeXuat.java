@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class NvvDeXuat {
     private int maDeXuat;
@@ -9,53 +9,28 @@ public class NvvDeXuat {
     private String trangThai;
     private Date ngayGui;
 
-    public int getMaDeXuat() {
-        return maDeXuat;
-    }
+    public NvvDeXuat() {}
 
-    public void setMaDeXuat(int maDeXuat) {
+    public NvvDeXuat(int maDeXuat, String tenThietBi, String moTa, String trangThai, Date ngayGui) {
         this.maDeXuat = maDeXuat;
-    }
-
-    public String getTenThietBi() {
-        return tenThietBi;
-    }
-
-    public void setTenThietBi(String tenThietBi) {
         this.tenThietBi = tenThietBi;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
         this.moTa = moTa;
-    }
-
-    public String getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
-    }
-
-    public Date getNgayGui() {
-        return ngayGui;
-    }
-
-    public void setNgayGui(Date ngayGui) {
         this.ngayGui = ngayGui;
     }
 
-	public void setNoiDung(String string) {
-		// TODO Auto-generated method stub
-		
-	}
+    public int getMaDeXuat() { return maDeXuat; }
+    public void setMaDeXuat(int maDeXuat) { this.maDeXuat = maDeXuat; }
 
-	public void setMaDeXuat(java.sql.Date date) {
-		// TODO Auto-generated method stub
-		
-	}
+    public String getTenThietBi() { return tenThietBi; }
+    public void setTenThietBi(String tenThietBi) { this.tenThietBi = tenThietBi; }
+
+    public String getMoTa() { return moTa; }
+    public void setMoTa(String moTa) { this.moTa = moTa; }
+
+    public String getTrangThai() { return trangThai; }
+    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+
+    public Date getNgayGui() { return ngayGui; }
+    public void setNgayGui(Date ngayGui) { this.ngayGui = ngayGui; }
 }

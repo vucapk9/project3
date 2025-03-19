@@ -1,45 +1,50 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import model.NvvDeXuat;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.NvvDeXuat;
-
 public class NvvDeXuatdao {
-    private String url = "jdbc:mysql://localhost:3307/quanlytrangthietbimamnon_nvv2210900081"; 
-    private String username = "root";
-    private String password = ""; 
+    private Connection conn;
 
-    public Connection connect() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Không tìm thấy Driver MySQL", e);
-        }
-        return DriverManager.getConnection(url, username, password);
+    public NvvDeXuatdao(Connection conn) {
+        this.conn = conn;
     }
-    
-    public List<NvvDeXuat> getAll() {
+
+    public List<NvvDeXuat> getAllDeXuat() {
         List<NvvDeXuat> list = new ArrayList<>();
-        String sql = "SELECT * FROM NvvDeXuat";
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try {
+            String sql = "SELECT * FROM nvvdexuat";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                NvvDeXuat dx = new NvvDeXuat();
-                dx.setMaDeXuat(rs.getInt("maDeXuat"));
-                dx.setNoiDung(rs.getString("noiDung"));
-                dx.setMaDeXuat(rs.getDate("ngayDeXuat"));
-                list.add(dx);
+                list.add(new NvvDeXuat(
+                    rs.getInt("MaDeXuat"),
+                    rs.getString("TenThietBi"),
+                    rs.getString("MoTa"),
+                    rs.getString("TrangThai"),
+                    rs.getDate("NgayGui")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public boolean addDeXuat(NvvDeXuat deXuat) {
+        try {
+            String sql = "INSERT INTO nvvdexuat (TenThietBi, MoTa, TrangThai, NgayGui) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, deXuat.getTenThietBi());
+            ps.setString(2, deXuat.getMoTa());
+            ps.setString(3, deXuat.getTrangThai());
+            ps.setDate(4, deXuat.getNgayGui());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

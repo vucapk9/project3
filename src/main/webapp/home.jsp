@@ -31,7 +31,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="home.jsp">🏠 Quản Lý Thiết Bị</a>
+            <a class="navbar-brand" href="home.jsp">🏠 Quản Lý Thiết Bị </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -61,7 +61,7 @@
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body text-center">
-                        <h5 class="card-title">📦 Quản Lý Thiết Bị</h5>
+                        <h5 class="card-title">📦 Quản Lý Thiết Bị Mầm Non</h5>
                         <p class="card-text">Thêm, sửa, xóa và theo dõi thiết bị.</p>
                         <a href="nvv_thietbi_list.jsp" class="btn btn-primary">Xem Chi Tiết</a>
                     </div>
@@ -173,20 +173,8 @@
             </div>
         </div>
 
+        
         <!-- Sản phẩm 7 -->
-        <div class="col-md-4 mb-4">
-            <div class="product-card">
-                <img src="images/xe-luon.png" alt="Xe lượn">
-                <h5 class="mt-2">Xe lượn siêu tốc cho bé</h5>
-                <p><strong>5.500.000đ</strong></p>
-                <div class="btn-group">
-                    <a href="chitiet.jsp?id=7" class="btn btn-info btn-custom">Chi tiết</a>
-                    <a href="muahang.jsp?id=7" class="btn btn-success btn-custom">Mua hàng</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sản phẩm 8 -->
         <div class="col-md-4 mb-4">
             <div class="product-card">
                 <img src="images/nha-bong.png" alt="Nhà bóng">
@@ -199,7 +187,7 @@
             </div>
         </div>
 
-        <!-- Sản phẩm 9 -->
+        <!-- Sản phẩm 8 -->
         <div class="col-md-4 mb-4">
             <div class="product-card">
                 <img src="images/be-boi.png" alt="Bể bơi hơi">
@@ -212,7 +200,7 @@
             </div>
         </div>
 
-        <!-- Sản phẩm 10 -->
+        <!-- Sản phẩm 9 -->
         <div class="col-md-4 mb-4">
             <div class="product-card">
                 <img src="images/lap-rap.png" alt="Bộ lắp ráp">
